@@ -1,0 +1,347 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b1020">
+  <meta name="description" content="StudentFlow student management dashboard">
+  <title>StudentFlow — Student Management</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#dashboard">
+        <span class="brand-mark">S</span>
+        <span class="brand-name">student<span>flow</span><small>STUDENT MANAGEMENT</small></span>
+      </a>
+
+      <div class="nav-label">WORKSPACE</div>
+      <nav class="main-nav" aria-label="Main navigation">
+        <button class="nav-link active" data-page="dashboard"><span>◫</span> Overview</button>
+        <button class="nav-link" data-page="students"><span>♙</span> Students <b id="navStudentCount">0</b></button>
+        <button class="nav-link" data-page="attendance"><span>✓</span> Attendance</button>
+        <button class="nav-link" data-page="calendar"><span>▦</span> Calendar</button>
+        <button class="nav-link" data-page="reports"><span>▥</span> Reports</button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="tip-card">
+          <span class="tip-icon">✦</span>
+          <strong>Your workspace,<br>your progress.</strong>
+          <p>Keep every student detail organised in one place.</p>
+          <button data-page="reports">View reports ↗</button>
+        </div>
+        <div class="sidebar-user">
+          <span class="avatar">OW</span>
+          <span><strong>Workspace Owner</strong><small>Local workspace</small></span>
+          <i></i>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="icon-button menu-toggle" id="menuToggle"
+            aria-label="Open navigation menu"
+            aria-controls="sidebar" aria-expanded="false">☰</button>
+          <div class="breadcrumb">
+            <span>Workspace</span><b>/</b>
+            <strong id="breadcrumbCurrent">Overview</strong>
+          </div>
+        </div>
+
+        <div class="topbar-actions">
+          <div class="top-date">▦ <span id="topDate">Today</span></div>
+          <div class="notification-wrap">
+            <button class="icon-button notification-button" id="notificationBtn"
+              aria-label="Notifications">♧<i id="notificationDot"></i></button>
+            <section class="notification-popover" id="notificationPopover">
+              <div class="popover-heading">
+                <div><strong>Notifications</strong><small>Your latest activity</small></div>
+                <button class="text-button" id="markReadBtn">Mark read</button>
+              </div>
+              <div class="notification-list" id="notificationList"></div>
+            </section>
+          </div>
+          <div class="top-profile">
+            <span class="avatar">OW</span>
+            <span><strong>Workspace Owner</strong><small>StudentFlow</small></span>
+          </div>
+        </div>
+      </header>
+
+      <div class="page-content">
+        <!-- DASHBOARD -->
+        <section class="page-view active" id="page-dashboard">
+          <div class="page-heading">
+            <div>
+              <div class="eyebrow">YOUR ACADEMIC SPACE</div>
+              <h1>Good to see you <span>✦</span></h1>
+              <p>Here’s what’s happening with your students today.</p>
+            </div>
+            <button class="primary-button" id="quickAddBtn">＋ Add student</button>
+          </div>
+
+          <div class="welcome-banner">
+            <div class="welcome-copy">
+              <span class="banner-kicker">STUDENTFLOW OVERVIEW</span>
+              <h2>Small steps.<br><em>Big progress.</em></h2>
+              <p>Stay on top of your student community with a clearer view of every detail.</p>
+              <button class="banner-button" data-page="students">Explore students →</button>
+            </div>
+            <div class="banner-art">
+              <div class="art-ring"></div>
+              <div class="art-card">
+                <div class="art-dots">● ● ●</div>
+                <div class="art-lines"><i></i><i></i><i></i></div>
+                <div class="art-bars"><b></b><b></b><b></b><b></b><b></b><b></b></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-title-row">
+            <div><h2>At a glance</h2><p>Your student community, in numbers.</p></div>
+            <span class="live-label">● LIVE SUMMARY</span>
+          </div>
+
+          <div class="stats-grid">
+            <article class="stat-card">
+              <div class="stat-top"><span class="stat-icon purple">♙</span><span class="stat-caption">TOTAL ENROLLED</span></div>
+              <div class="stat-number" id="statStudents">0</div>
+              <div class="stat-note">Students in your workspace</div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-top"><span class="stat-icon cyan">✓</span><span class="stat-caption">PRESENT TODAY</span></div>
+              <div class="stat-number" id="statPresent">0</div>
+              <div class="stat-note" id="presentSub">Attendance marked today</div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-top"><span class="stat-icon violet">◷</span><span class="stat-caption">ATTENDANCE RATE</span></div>
+              <div class="stat-number" id="statRate">0%</div>
+              <div class="stat-note">Based on today’s records</div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-top"><span class="stat-icon amber">✦</span><span class="stat-caption">UPCOMING EVENTS</span></div>
+              <div class="stat-number" id="statEvents">0</div>
+              <div class="stat-note">Events scheduled ahead</div>
+            </article>
+          </div>
+
+          <div class="dashboard-columns">
+            <section class="panel">
+              <div class="panel-heading">
+                <div><h3>Recent students</h3><p>The latest additions to your workspace.</p></div>
+                <button class="text-button" data-page="students">View all →</button>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>STUDENT</th><th>CLASS / COURSE</th><th>STATUS</th><th>JOINED</th></tr></thead>
+                  <tbody id="recentStudentsBody"></tbody>
+                </table>
+              </div>
+              <div class="empty-state" id="recentEmpty" hidden>No students yet. Add your first student.</div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-heading">
+                <div><h3>Attendance snapshot</h3><p>Today’s class participation.</p></div>
+              </div>
+              <div class="attendance-visual">
+                <div class="donut" id="attendanceDonut">
+                  <div><strong id="donutPercent">0%</strong><small>present</small></div>
+                </div>
+                <div class="attendance-legend">
+                  <div><i class="legend-present"></i> Present <strong id="legendPresent">0</strong></div>
+                  <div><i class="legend-absent"></i> Absent <strong id="legendAbsent">0</strong></div>
+                  <div><i class="legend-unmarked"></i> Unmarked <strong id="legendUnmarked">0</strong></div>
+                </div>
+              </div>
+              <button class="panel-link" data-page="attendance">Manage attendance →</button>
+            </section>
+          </div>
+
+          <section class="panel events-panel">
+            <div class="panel-heading">
+              <div><h3>Coming up</h3><p>Keep an eye on what’s next.</p></div>
+              <button class="text-button" data-page="calendar">Open calendar →</button>
+            </div>
+            <div class="upcoming-list" id="upcomingList"></div>
+            <div class="empty-state" id="eventsEmpty" hidden>No upcoming events. Add one in your calendar.</div>
+          </section>
+        </section>
+
+        <!-- STUDENTS -->
+        <section class="page-view" id="page-students">
+          <div class="page-heading">
+            <div><div class="eyebrow">YOUR COMMUNITY</div><h1>Student directory</h1><p>Manage your student records from one simple place.</p></div>
+            <button class="primary-button" id="addStudentBtn">＋ Add student</button>
+          </div>
+          <div class="toolbar panel">
+            <label class="search-box">⌕ <input id="studentSearch" type="search" placeholder="Search by name, email or ID..."></label>
+            <div class="toolbar-right">
+              <select id="courseFilter"><option value="all">All classes</option></select>
+              <select id="statusFilter"><option value="all">All statuses</option><option>Active</option><option>Inactive</option></select>
+              <button class="outline-button" id="exportStudentsBtn">⇩ Export CSV</button>
+            </div>
+          </div>
+          <section class="panel directory-panel">
+            <div class="panel-heading">
+              <div><h3>All students <span class="count-badge" id="directoryCount">0</span></h3><p>Student information and enrolment details.</p></div>
+              <small id="directoryMeta">Showing 0 records</small>
+            </div>
+            <div class="table-wrap">
+              <table class="directory-table">
+                <thead><tr><th>STUDENT</th><th>STUDENT ID</th><th>CLASS / COURSE</th><th>EMAIL</th><th>STATUS</th><th>JOINED</th><th>ACTIONS</th></tr></thead>
+                <tbody id="studentsTableBody"></tbody>
+              </table>
+            </div>
+            <div class="empty-state" id="studentsEmpty" hidden>No matching students found.</div>
+          </section>
+        </section>
+
+        <!-- ATTENDANCE -->
+        <section class="page-view" id="page-attendance">
+          <div class="page-heading">
+            <div><div class="eyebrow">DAILY TRACKING</div><h1>Attendance</h1><p>Mark and review student attendance by date.</p></div>
+            <div class="heading-actions">
+              <input class="date-input" type="date" id="attendanceDate">
+              <button class="primary-button" id="saveAttendanceBtn">Save attendance</button>
+            </div>
+          </div>
+          <div class="stats-grid attendance-stats">
+            <article class="stat-card"><div class="stat-caption">PRESENT</div><div class="stat-number" id="attPresent">0</div></article>
+            <article class="stat-card"><div class="stat-caption">ABSENT</div><div class="stat-number" id="attAbsent">0</div></article>
+            <article class="stat-card"><div class="stat-caption">NOT MARKED</div><div class="stat-number" id="attUnmarked">0</div></article>
+          </div>
+          <section class="panel directory-panel">
+            <div class="panel-heading">
+              <div><h3>Class register</h3><p>Select a status for each student.</p></div>
+              <div class="quick-actions"><button class="small-action" id="markAllPresent">Mark all present</button><button class="small-action" id="resetAttendance">Reset day</button></div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>STUDENT</th><th>STUDENT ID</th><th>CLASS / COURSE</th><th>ATTENDANCE STATUS</th></tr></thead>
+                <tbody id="attendanceTableBody"></tbody>
+              </table>
+            </div>
+            <div class="empty-state" id="attendanceEmpty" hidden>Add students before taking attendance.</div>
+          </section>
+        </section>
+
+        <!-- CALENDAR -->
+        <section class="page-view" id="page-calendar">
+          <div class="page-heading">
+            <div><div class="eyebrow">PLAN AHEAD</div><h1>Calendar</h1><p>Organise academic dates, reminders and important events.</p></div>
+            <button class="primary-button" id="addEventBtn">＋ Add event</button>
+          </div>
+          <div class="calendar-layout">
+            <section class="panel calendar-panel">
+              <div class="calendar-controls">
+                <button class="icon-button" id="prevMonth">‹</button>
+                <h3 id="monthTitle">Month</h3>
+                <button class="icon-button" id="nextMonth">›</button>
+                <button class="small-action" id="todayBtn">Today</button>
+              </div>
+              <div class="calendar-grid" id="calendarGrid"></div>
+              <div class="calendar-key"><span>● Has event</span><span>◉ Today</span><span>◆ Selected</span></div>
+            </section>
+            <section class="panel selected-day-panel">
+              <div class="panel-heading"><div><h3 id="selectedDayTitle">Selected day</h3><p>Events and reminders</p></div></div>
+              <div id="selectedDayEvents" class="selected-events"></div>
+              <button class="panel-link" id="addEventForDay">＋ Add event for this day</button>
+            </section>
+          </div>
+        </section>
+
+        <!-- REPORTS -->
+        <section class="page-view" id="page-reports">
+          <div class="page-heading">
+            <div><div class="eyebrow">INSIGHTS & EXPORTS</div><h1>Reports</h1><p>A quick overview of your student data and attendance.</p></div>
+            <button class="primary-button" id="reportExportBtn">⇩ Export student CSV</button>
+          </div>
+          <div class="stats-grid">
+            <article class="stat-card"><div class="stat-caption">TOTAL STUDENTS</div><div class="stat-number" id="reportTotal">0</div></article>
+            <article class="stat-card"><div class="stat-caption">ACTIVE STUDENTS</div><div class="stat-number" id="reportActive">0</div></article>
+            <article class="stat-card"><div class="stat-caption">TOTAL EVENTS</div><div class="stat-number" id="reportEvents">0</div></article>
+          </div>
+          <div class="reports-grid">
+            <section class="panel report-panel">
+              <div class="panel-heading"><div><h3>Students by class</h3><p>Distribution across your courses.</p></div></div>
+              <div id="courseChart" class="bar-chart"></div>
+            </section>
+            <section class="panel report-panel">
+              <div class="panel-heading"><div><h3>Attendance summary</h3><p>For the selected attendance date.</p></div></div>
+              <div class="report-attendance">
+                <div class="report-donut" id="reportDonut"><strong id="reportRate">0%</strong></div>
+                <div><strong id="reportAttendanceCount">0 / 0</strong><p>Students marked present</p><small id="reportAttendanceDate"></small></div>
+              </div>
+            </section>
+          </div>
+          <section class="panel data-panel">
+            <div class="panel-heading">
+              <div><h3>Your data</h3><p>StudentFlow stores records in this browser using local storage.</p></div>
+              <span class="local-badge">● LOCAL STORAGE</span>
+            </div>
+            <div class="data-actions"><div><strong>Export a backup</strong><p>Download your student records as a CSV file.</p></div><button class="outline-button" id="backupExportBtn">Download CSV ⇩</button></div>
+            <div class="data-actions"><div><strong>Reset sample workspace</strong><p>Restore demo students and events. This replaces your current browser data.</p></div><button class="danger-button" id="resetDemoBtn">Reset demo data</button></div>
+          </section>
+        </section>
+      </div>
+
+      <footer class="app-footer"><span>© <span id="footerYear"></span> StudentFlow</span><span>Made for better learning experiences ✦</span></footer>
+    </main>
+  </div>
+
+  <!-- ADD / EDIT STUDENT -->
+  <div class="modal-backdrop" id="studentModal" aria-hidden="true">
+    <section class="modal-card" role="dialog" aria-modal="true" aria-labelledby="studentModalTitle">
+      <div class="modal-heading">
+        <div><div class="eyebrow">STUDENT DETAILS</div><h2 id="studentModalTitle">Add a student</h2><p>Fill in the details to create a student record.</p></div>
+        <button class="modal-close" data-close="studentModal">×</button>
+      </div>
+      <form id="studentForm">
+        <input type="hidden" id="studentRecordId">
+        <div class="form-grid">
+          <label class="form-field full-field">Full name<input id="studentName" type="text" placeholder="e.g. Aanya Sharma" maxlength="70" required></label>
+          <label class="form-field">Student ID<input id="studentId" type="text" placeholder="e.g. STU-1007" maxlength="24" required></label>
+          <label class="form-field">Class / Course<input id="studentCourse" type="text" placeholder="e.g. Computer Science" maxlength="50" required></label>
+          <label class="form-field full-field">Email address<input id="studentEmail" type="email" placeholder="student@example.com" maxlength="100"></label>
+          <label class="form-field">Phone number<input id="studentPhone" type="tel" placeholder="Optional" maxlength="20"></label>
+          <label class="form-field">Status<select id="studentStatus"><option>Active</option><option>Inactive</option></select></label>
+          <label class="form-field full-field">Join date<input id="studentJoinDate" type="date" required></label>
+        </div>
+        <div class="modal-actions"><button type="button" class="outline-button" data-close="studentModal">Cancel</button><button type="submit" class="primary-button" id="studentSubmitBtn">Save student</button></div>
+      </form>
+    </section>
+  </div>
+
+  <!-- ADD / EDIT EVENT -->
+  <div class="modal-backdrop" id="eventModal" aria-hidden="true">
+    <section class="modal-card small-modal" role="dialog" aria-modal="true" aria-labelledby="eventModalTitle">
+      <div class="modal-heading">
+        <div><div class="eyebrow">CALENDAR</div><h2 id="eventModalTitle">Add an event</h2><p>Create a reminder for your workspace.</p></div>
+        <button class="modal-close" data-close="eventModal">×</button>
+      </div>
+      <form id="eventForm">
+        <input type="hidden" id="eventRecordId">
+        <label class="form-field">Event title<input id="eventTitle" type="text" placeholder="e.g. Semester examination" maxlength="70" required></label>
+        <div class="form-grid">
+          <label class="form-field">Date<input id="eventDate" type="date" required></label>
+          <label class="form-field">Category<select id="eventCategory"><option>Academic</option><option>Examination</option><option>Meeting</option><option>Reminder</option><option>Other</option></select></label>
+        </div>
+        <label class="form-field">Description <span class="optional-label">(optional)</span><textarea id="eventDescription" rows="3" maxlength="180" placeholder="Add a short note..."></textarea></label>
+        <div class="modal-actions"><button type="button" class="outline-button" data-close="eventModal">Cancel</button><button type="submit" class="primary-button">Save event</button></div>
+      </form>
+    </section>
+  </div>
+
+  <div class="toast-region" id="toastRegion" aria-live="polite"></div>
+  <script src="script.js"></script>
+</body>
+</html>
