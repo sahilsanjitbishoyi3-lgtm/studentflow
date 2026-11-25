@@ -110,6 +110,12 @@
           <button class="primary-button" id="addStudentButton">+ Add Student</button>
         </div>
 
+
+        <div class="panel" id="apiConnectionPanel">
+          <div class="panel-heading"><div><h3>API Connection</h3><p id="apiStatus">Not connected</p></div></div>
+          <div class="toolbar"><input id="apiEndpointInput" type="url" placeholder="Paste your CRUDCrud endpoint URL here" style="min-width:260px;flex:1"><button class="primary-button" id="connectApiButton">Connect API</button><button class="secondary-button" id="refreshApiButton">Refresh API Data</button></div>
+          <p class="stat-note">Create an endpoint on CRUDCrud and paste its collection URL here. API changes use GET, POST, PUT and DELETE.</p>
+        </div>
         <div class="panel form-panel hidden" id="studentFormPanel">
           <div class="panel-heading">
             <div>
