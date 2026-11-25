@@ -1,7 +1,7 @@
 "use strict";
 const KEY="studentflow_students",ATT="studentflow_attendance",EVT="studentflow_events",ENDPOINT_KEY="studentflow_crudcrud_endpoint";
 const $=id=>document.getElementById(id);
-let endpoint=localStorage.getItem(ENDPOINT_KEY)||"",students=[],attendance=JSON.parse(localStorage.getItem(ATT)||"{}"),events=JSON.parse(localStorage.getItem(EVT)||"[]"),month=new Date();
+let endpoint=localStorage.getItem(ENDPOINT_KEY)||"https://6b071c3b57fa1297bb56ca1f.mockapi.io/students",students=[],attendance=JSON.parse(localStorage.getItem(ATT)||"{}"),events=JSON.parse(localStorage.getItem(EVT)||"[]"),month=new Date();
 const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const day=(d=new Date())=>[d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-");
 function save(){localStorage.setItem(KEY,JSON.stringify(students));}
